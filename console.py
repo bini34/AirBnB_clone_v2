@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
                         if re.match(stru, v):
                             v = v[1:-1].replace('_', ' ')
                         elif '.' in v:
-                            if all(char.isdigit() or char == '.'
+                            if all(char.isdigit() or char == '.' or char == '-'
                                    for char in v):
                                 v = float(v)
                         else:
