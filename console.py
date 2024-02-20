@@ -3,6 +3,7 @@
 import cmd
 import sys
 import uuid
+import json
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -128,15 +129,18 @@ class HBNBCommand(cmd.Cmd):
                 while i < len(pairs):
                     if len(pairs[i].split('=')) == 2:
                         k, v = pairs[i].split('=')
-                        if re.match(stru, v):
+                        if v.startswith('"') and endswith('"'):
                             v = v[1:-1].replace('_', ' ')
                         elif '.' in v:
-                            if all(char.isdigit() or char == '.'
-                                   for char in v):
+                            try:
                                 v = float(v)
+                            except ValueError:
+                                pass
                         else:
-                            if v.isdigit():
+                            try:
                                 v = int(v)
+                            except ValueError:
+                                pass
                         data[k] = v
                     else:
                         print("** invalid syntax **")
@@ -241,7 +245,7 @@ class HBNBCommand(cmd.Cmd):
             for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
 
-        print(print_list)
+        print(json.dumps(print_list))
 
     def help_all(self):
         """ Help information for the all command """
