@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-""" Console Module """
+""" interactive """
 import cmd
 import sys
+import uuid
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,6 +11,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import re
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -73,7 +76,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,16 +118,42 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        data = {}
+        if args:
+            if args.split()[0] in HBNBCommand.classes:
+                items = args.split()
+                pairs = items[1:]
+                print(pairs)
+                i = 0
+                stru = r'^\"[A-Za-z0-9\s\S]*\"$'
+                while i < len(pairs):
+                    if len(pairs[i].split('=')) == 2:
+                        k, v = pairs[i].split('=')
+                        if re.match(stru, v):
+                            v = v[1:].replace('_', ' ')
+                        elif '.' in v:
+                            if all(char.isdigit() or char == '.'
+                                   for char in v):
+                                v = float(v)
+                        else:
+                            if v.isdigit():
+                                v = int(v)
+                        data[k] = v
+                    else:
+                        print("** invalid syntax **")
+                        return
+                    i = i + 1
+            else:
+                print("** class doesn't exist**")
+                return
+        else:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[items[0]]()
+        for i, j in data.items():
+            setattr(new_instance, i, j)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -187,7 +216,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -319,6 +348,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
