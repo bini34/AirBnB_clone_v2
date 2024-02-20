@@ -129,18 +129,15 @@ class HBNBCommand(cmd.Cmd):
                 while i < len(pairs):
                     if len(pairs[i].split('=')) == 2:
                         k, v = pairs[i].split('=')
-                        if v.startswith('"') and endswith('"'):
+                        if re.match(stru, v):
                             v = v[1:-1].replace('_', ' ')
                         elif '.' in v:
-                            try:
+                            if all(char.isdigit() or char == '.'
+                                   for char in v):
                                 v = float(v)
-                            except ValueError:
-                                pass
                         else:
-                            try:
+                            if v.isdigit():
                                 v = int(v)
-                            except ValueError:
-                                pass
                         data[k] = v
                     else:
                         print("** invalid syntax **")
