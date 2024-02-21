@@ -55,7 +55,7 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """all amenities"""
-            return [
+            Place.amenity_ids = [
                 amienity
                 for amenity in models.storage.all('Amenity').values()
                 if amienity.place_id == self.id
