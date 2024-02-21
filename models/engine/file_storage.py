@@ -33,9 +33,7 @@ class FileStorage:
     def delete(self, obj=None):
         """delete entry in the objects list"""
         if obj:
-            it = obj.__class__.__name__ + '.' + obj.id
-            if it in FileStorage.__objects:
-                del FileStorage.__objects[it]
+            del FileStorage.__objects[obj.__class__.__name__ + '.' + obj.id]
         else:
             return
 
