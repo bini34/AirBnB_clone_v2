@@ -3,9 +3,16 @@
 from models.base_model import BaseModel, Base
 from models.review import Review
 import models
-from sqlalchemy import Integer, String, Column, Float, ForeignKey
+from sqlalchemy import Integer, Table, String, Column, Float, ForeignKey
 import os
 from sqlalchemy.orm import relationship
+
+place_amenity = Table(
+    'place_amenity',
+    Base.metadata,
+    Column('place_id', String(60), ForeignKey('places.id'), nullable=False),
+    Column('amenity_id', String(60), ForeignKey('places.id'). nullable=False)
+    )
 
 
 class Place(BaseModel, Base):
@@ -22,6 +29,11 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float)
     longitude = Column(Float)
+    amenities = relationship(
+        'Amenity',
+        secondary=place_amenity,
+        viewonly=False,
+        backref='place_amenities')
 
     if ENV != 'db':
         @property
@@ -31,6 +43,15 @@ class Place(BaseModel, Base):
                 review
                 for review in models.storage.all('Review').values()
                 if review.place_id == self.id
+            ]
+
+        @property
+        def amenities(self):
+            """all amenities"""
+            return [
+                amienity
+                for amenity in models.storage.all('Amenity').values()
+                if amienity.place_id == self.id
             ]
     else:
         reviews = relationship(
