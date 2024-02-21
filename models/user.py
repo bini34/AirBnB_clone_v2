@@ -14,3 +14,5 @@ class User(BaseModel, Base):
 
     places = sqlalchemy.orm.relationship(
         "Place", backref="user", cascade="all, delete-orphan")
+    reviews = sqlalchemy.orm.relationship(
+        "Review", backref="user", cascade="all, delete-orphan")
