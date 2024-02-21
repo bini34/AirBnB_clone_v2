@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
+import sqlalchemy
 
 
 class Amenity(BaseModel, Base):
     """blue print for amenity"""
     __tablename__ = 'amenities'
-    name = Column(String(128), nullable=False)
-
+    name = sqlalchemy.Column(sqlalchemy.String(128), nullable=False)
+    place_amenities = sqlalchemy.orm.relationship(
+        'Place', secondary='place_amenity')
