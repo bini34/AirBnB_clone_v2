@@ -8,5 +8,3 @@ class Amenity(BaseModel, Base):
     """blue print for amenity"""
     __tablename__ = 'amenities'
     name = sqlalchemy.Column(sqlalchemy.String(128), nullable=False)
-    place_amenities = sqlalchemy.orm.relationship(
-        'Place', secondary='place_amenity')
