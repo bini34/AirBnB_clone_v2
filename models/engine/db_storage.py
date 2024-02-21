@@ -43,13 +43,11 @@ class DBStorage:
             if not cls:
                 qr = self.__session.query(DBStorage.class_list[k]).all()
                 for i in qr:
-                    sr = i.__class__.__name__ + '.' + i.id
-                    res[sr] = i
+                    res[i.__class__.__name__ + '.' + i.id] = i
             elif cls == k:
                 qr = self.__session.query(DBStorage.class_list[k]).all()
                 for i in qr:
-                    sr = i.__class__.__name__ + '.' + i.id
-                    res[sr] = i
+                    res[i.__class__.__name__ + '.' + i.id] = i
             else:
                 pass
         return res
@@ -74,5 +72,4 @@ class DBStorage:
         connection = sqlalchemy.orm.sessionmaker(
             bind=self.__engine, expire_on_commit=False)
         Base.metadata.create_all(self.__engine)
-        Session = sqlalchemy.orm.scoped_session(connection)
-        self.__session = Session()
+        self.__session = sqlalchemy.orm.scoped_session(connection)()
