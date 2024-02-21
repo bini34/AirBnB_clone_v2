@@ -36,15 +36,15 @@ class DBStorage:
         if ENV == 'test':
             Base.metadata.drop_all(self.__engine)
 
-    def all(self, cls=None):
+    def all(self, name=None):
         """this method querys database"""
         res = {}
         for k, v in DBStorage.class_list.items():
-            if not cls:
-                qr = self.__session.query(DBStorage.class_list[k]).all()
+            if not name:
+                qr = self.__session.query(DBStorage.class_list[k])
                 for i in qr:
                     res[i.__class__.__name__ + '.' + i.id] = i
-            elif cls == k:
+            elif name == k:
                 qr = self.__session.query(DBStorage.class_list[k]).all()
                 for i in qr:
                     res[i.__class__.__name__ + '.' + i.id] = i
