@@ -54,6 +54,14 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
+            return [
+                amenity
+                for amenity in model.storage.all('Amenity').values()
+                if Amenity.place_id == self.idi
+            ]
+
+        @amienities.setter
+        def amenities(self):
             """all amenities"""
             Place.amenity_ids = [
                 amienity
