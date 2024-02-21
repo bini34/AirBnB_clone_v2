@@ -6,8 +6,8 @@ from models.base_model import BaseModel, Base
 class Place(BaseModel, Base):
     __tablename__ = 'places'
     """ A place to stay """
-    city_id = Column(String(60), nullable=False, ForeignKey('cities.id')
-    user_id = Column(String(60), nullable=False, ForeignKey('users.id')
+    city_id = Column(String(60), nullable=False, ForeignKey('cities.id'))
+    user_id = Column(String(60), nullable=False, ForeignKey('users.id'))
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=False)
     number_rooms = Column(Integer, nullable=False, default=0)
