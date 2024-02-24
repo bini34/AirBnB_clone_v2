@@ -12,7 +12,7 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         if cls:
             c = {k: v for k, v in FileStorage.__objects.items()
-                 if type(v) == cls}
+                 if type(v) == cls
             return c
         else:
             return FileStorage.__objects
@@ -33,9 +33,9 @@ class FileStorage:
     def delete(self, obj=None):
         """delete entry in the objects list"""
         if obj:
-            del FileStorage.__objects[obj.__class__.__name__ + '.' + obj.id]
-        else:
-            return
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+                if key in self.__objects:
+                    del self.__objects[key]
 
     def reload(self):
         """Loads storage dictionary from file"""
