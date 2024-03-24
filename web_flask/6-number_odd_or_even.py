@@ -70,7 +70,7 @@ def number_odd_or_even(n):
     """
     function that return number to template
     """
-    if n/2 == 0:
+    if n%2 == 0:
         result = 'even'
     else:
         result = 'odd'
