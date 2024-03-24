@@ -34,7 +34,7 @@ def c(text):
 
 
 @app.route('/python/<text>', strict_slashes=False)
-def c(text):
+def python_text(text):
     """
     function that return python with input text
     """
@@ -42,7 +42,7 @@ def c(text):
 
 
 @app.route('/python', strict_slashes=False)
-def c(text):
+def python(text):
     """
     function that return Python is cool
     """
